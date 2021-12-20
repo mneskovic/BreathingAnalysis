@@ -3,7 +3,7 @@ from scipy.io.wavfile import write
 from pyAudioAnalysis import audioTrainTest as aT
 
 # Train SVM Classifier
-aT.extract_features_and_train(["data/exhale","data/inhale"], 1.0, 1.0, aT.shortTermWindow, aT.shortTermStep, "svm", "svmSMtemp", False)
+aT.extract_features_and_train(["data/split/exhale","data/split/inhale"], 1.0, 1.0, aT.shortTermWindow, aT.shortTermStep, "svm", "svmSMtemp", False)
 
 fs = 44100  # Sample rate
 seconds = 0.5  # Duration of recording
