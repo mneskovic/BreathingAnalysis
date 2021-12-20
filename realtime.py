@@ -1,9 +1,10 @@
 import sounddevice as sd
 from scipy.io.wavfile import write
 from pyAudioAnalysis import audioTrainTest as aT
+import scipy
 
 # Train SVM Classifier
-aT.extract_features_and_train(["data/split/exhale","data/split/inhale"], 1.0, 1.0, aT.shortTermWindow, aT.shortTermStep, "svm", "svmSMtemp", False)
+aT.extract_features_and_train(["data/filtered/exhale","data/filtered/inhale"], 1.0, 1.0, aT.shortTermWindow, aT.shortTermStep, "svm", "svmSMtemp", False)
 
 fs = 44100  # Sample rate
 seconds = 0.5  # Duration of recording
@@ -14,10 +15,14 @@ while True:
     # Record chunk
     myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     sd.wait()  # Wait until recording is finished
-    write('output.wav', fs, myrecording)  # Save as WAV file
+    #write('output.wav', fs, myrecording)  # Save as WAV file
+    print(myrecording.shape)
+    b, a = scipy.signal.butter(3, [500, 5000], btype='bandpass', fs=fs)
+    filteredRecording = scipy.signal.filtfilt(b, a, myrecording[:, 0])
+    write('output-filter.wav', fs, filteredRecording)
 
     # Classify the chunk
-    currBreath, scores, classes = aT.file_classification("output.wav", "svmSMtemp","svm")
+    currBreath, scores, classes = aT.file_classification("output-filter.wav", "svmSMtemp","svm")
     currBreath = int(currBreath)
 
     print("Exhale: " + str(scores[0]) + " Inhale: " + str(scores[1]))
