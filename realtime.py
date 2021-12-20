@@ -12,12 +12,16 @@ prevBreath = -1
 while True:
 
     # Record chunk
-    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     sd.wait()  # Wait until recording is finished
     write('output.wav', fs, myrecording)  # Save as WAV file
 
     # Classify the chunk
-    (currBreath, scores) = aT.file_classification("output.wav", "svmSMtemp","svm")
+    currBreath, scores, classes = aT.file_classification("output.wav", "svmSMtemp","svm")
+    currBreath = int(currBreath)
+
+    print("Exhale: " + str(scores[0]) + " Inhale: " + str(scores[1]))
+
     if scores[currBreath] > 0.8:
         if currBreath != prevBreath:
             if currBreath == 0.0:
@@ -25,4 +29,9 @@ while True:
             else:
                 print("Just Inhaled")
             prevBreath = currBreath
+        else:
+            print("Same")
+    else:
+        print("Inconclusive")
+           
 
