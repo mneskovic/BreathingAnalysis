@@ -9,7 +9,10 @@ fs = 44100  # Sample rate
 seconds = 0.5  # Duration of recording
 prevBreath = -1
 
-while True:
+total = 0
+numBreaths = -1
+
+while total < 30:
 
     # Record chunk
     myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
@@ -24,6 +27,7 @@ while True:
 
     if scores[currBreath] > 0.8:
         if currBreath != prevBreath:
+            numBreaths += 1
             if currBreath == 0.0:
                 print("Just Exhaled")
             else:
@@ -33,5 +37,6 @@ while True:
             print("Same")
     else:
         print("Inconclusive")
-           
+    total += 0.5
 
+print("Breaths per minute: " + str(numBreaths))
