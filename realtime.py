@@ -17,7 +17,7 @@ while True:
     write('output.wav', fs, myrecording)  # Save as WAV file
 
     # Classify the chunk
-    (currBreath, scores) = aT.file_classification("New Recording 4.wav", "svmSMtemp","svm")
+    (currBreath, scores) = aT.file_classification("output.wav", "svmSMtemp","svm")
     if scores[currBreath] > 0.8:
         if currBreath != prevBreath:
             if currBreath == 0.0:
