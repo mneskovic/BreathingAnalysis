@@ -1,7 +1,7 @@
 from pydub import AudioSegment
 import os
 
-dirs = ["data/filtered/inhale/", "data/filtered/exhale/", "data/filtered/split/exhale/", "data/filtered/split/inhale/"]
+dirs = ["data/filtered/split/inhale/", "data/filtered/split/exhale/", "data/filtered/doublesplit/exhale/", "data/filtered/doublesplit/inhale/"]
 
 for i in range(2):
     ct = 1
